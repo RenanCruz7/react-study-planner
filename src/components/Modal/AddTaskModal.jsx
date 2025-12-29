@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { useTheme } from '../../contexts/ThemeContext'
+import { useSelector } from 'react-redux'
+import { selectTheme } from '../../store/slices/themeSlice'
 
 function AddTaskModal({ isOpen, onClose, onAddTask }) {
-  const theme = useTheme()
+  const theme = useSelector(selectTheme)
   const [taskTitle, setTaskTitle] = useState('')
   const [taskDescription, setTaskDescription] = useState('')
   const [taskDate, setTaskDate] = useState(new Date().toISOString().split('T')[0])
