@@ -1,27 +1,20 @@
 import { useState } from 'react'
-import { useTasks } from '../contexts/TaskContext'
 import { useTheme } from '../contexts/ThemeContext'
 import { EmptyState, ThemeToggle } from '../components/UI'
 import { AddTaskModal, EditTaskModal } from '../components/Modal'
 import { TaskSection } from '../components/Task'
-import { useSelector } from 'react-redux'
-import { selectCompletedTasks, selectPedingTasks, selectTasks } from '../store/slices/taskSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectCompletedTasks, selectPedingTasks, selectTasks, addTask,toggleTaskComplete, editTask, deleteTask } from '../store/slices/taskSlice'
 
 function StudyPlannerPage() {
+  const dispatch = useDispatch()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [taskToEdit, setTaskToEdit] = useState(null)
   const tasks = useSelector(selectTasks) // Get all tasks from Redux store
   const pendingTasks = useSelector(selectPedingTasks) // Get pending tasks from Redux store
   const completedTasks = useSelector(selectCompletedTasks) // Get completed tasks from Redux store
-  const {
-    addTask,
-    toggleTaskComplete,
-    editTask,
-    deleteTask,
-    getPendingTasks,
-    getCompletedTasks
-  } = useTasks()
+
 
   const handleAddTask = () => {
     setIsModalOpen(true)
@@ -32,11 +25,11 @@ function StudyPlannerPage() {
   }
 
   const handleAddNewTask = (newTask) => {
-    addTask(newTask)
+    dispatch(addTask(newTask))
   }
 
   const handleToggleComplete = (taskId) => {
-    toggleTaskComplete(taskId)
+    dispatch(toggleTaskComplete(taskId))
   }
 
   const handleEditTask = (taskId) => {
@@ -51,11 +44,11 @@ function StudyPlannerPage() {
   }
 
   const handleSaveEditTask = (taskId, updatedTask) => {
-    editTask(taskId, updatedTask)
+    dispatch(editTask({ taskId, updatedTask }))
   }
 
   const handleDeleteTask = (taskId) => {
-    deleteTask(taskId)
+    dispatch(deleteTask(taskId))
   }
 
   const theme = useTheme()
